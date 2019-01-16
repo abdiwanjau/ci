@@ -109,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 ####LOGIN
 LOGIN_URL = "login"
-LOGIN_REDIRECT_URL = "register"
+LOGIN_REDIRECT_URL = "home"
 LOGOUT_URL = "logout"
 
 #EMAIL

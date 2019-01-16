@@ -1,10 +1,14 @@
 from django.shortcuts import render,redirect
 
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login as auth_login
 
 from .forms import AddUserDetailsForm
 
 # Create your views here.
+def home(request):
+    return render(request,"home.html")
+
 def register(request):
     """
     This is the view I will use to register the users
@@ -17,7 +21,8 @@ def register(request):
             cd = email_form.cleaned_data
             new_user.email = cd["email"]
             new_user.save()
-            return redirect("login")
+            auth_login(request,new_user)
+            return redirect('home')
     else:
         user_form = UserCreationForm()
         email_form = AddUserDetailsForm()
