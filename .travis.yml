@@ -30,6 +30,3 @@ install:
 
 before_script:
   - psql -c "CREATE DATABASE mcre;" -U postgres
-
-script:
-  - python manage.py syncdb --noinput
