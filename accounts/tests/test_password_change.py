@@ -84,3 +84,22 @@ class InvalidPasswordChange(TestCase):
     
     def password_no_change(self):
         self.assertTrue(User.objects.first().check_password("old_password"))
+
+class PasswordChangeDone(TestCase):
+    def setUp(self):
+        User.objects.create_user(
+            username="marvin", password="old_password", email="mer@gmail.com")
+        self.client.login(username="marvin", password="old_password")
+        url = reverse("password_change_done")
+        self.response = self.client.get(url)
+
+    def test_status_code(self):
+        self.assertTrue(self.response.status_code == 200)
+
+    def test_html(self):
+        self.assertContains(
+            self.response, "Password Change Successful. You can login")
+    def test_link(self):
+        self.assertContains(self.response,'href="{}"'.format(reverse("login")))
+    
+
