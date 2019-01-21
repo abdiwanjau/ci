@@ -1,23 +1,26 @@
 language: python
-
 python:
-  - 3.6
-
-services: postgresql
-
-addons:
-  postgresql: "9.6"
-
+  - "3.6"
 env:
-  - DATABASE_URL=postgres://postgres:@localhost/travisci
-
+  - DJANGO_VERSION=2.1.5
+  - DJANGO_VERSION=1.11.14
+branches:
+  only:
+    - master
+# Start services.
+services:
+  - postgresql
+# command to install dependencies
 install:
-  - pip install -r requirements.txt
-
+  - pip install -q Django==$DJANGO_VERSION
+  - pip install -r requirements
+  - pip install python-coveralls
 before_script:
-  - psql -c "CREATE DATABASE travisci;" -U postgres
-  - python manage.py migrate --noinput
-  - python manage.py collectstatic
-
+  - psql -c "CREATE DATABASE mcre;" -U postgres
+  - python manage.py migrate
+  - python manage.py collectstatic --noinput
+# command to run tests
 script:
-  - python manage.py test
+  - pytest
+after_success:
+  - coveralls
